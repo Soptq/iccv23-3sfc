@@ -11,17 +11,9 @@ from data_utils import get_dataset
 
 from config import get_config
 
-import wandb
-
 args = get_config()
 device = args.device if torch.cuda.is_available() else "cpu"
 print("Using device: %s" % device)
-
-wandb.init(
-    project="fl-data-distillation",
-    entity="soptq",
-    config={k: v for k, v in vars(args).items()}
-)
 
 torch.manual_seed(args.seed)
 torch.cuda.manual_seed_all(args.seed)
@@ -142,8 +134,6 @@ for c_round in range(1, args.n_epoch + 1):
     report["acc_clients_highest"] = acc_clients_mean + acc_clients_std
     report["acc_servers_lowest"] = acc_servers_mean - acc_servers_std
     report["acc_servers_highest"] = acc_servers_mean + acc_servers_std
-
-    wandb.log(report)
 
     print(f"Round {c_round}, Clients Acc: {acc_clients}, Server Acc: {acc_servers}")
     # cfl_stats.log({"acc_clients": acc_clients, "acc_servers": acc_servers, "rounds": c_round})
