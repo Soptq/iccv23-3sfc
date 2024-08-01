@@ -28,7 +28,7 @@ def train_op(model, loader, optimizer, epochs=1, loss_fn=torch.nn.CrossEntropyLo
 
 
 def eval_op(model, loader, device="cpu"):
-    model.train()
+    model.eval()
     samples, correct = 0, 0
 
     with torch.no_grad():
